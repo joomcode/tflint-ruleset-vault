@@ -22,6 +22,7 @@ plugin "vault" {
 
   signing_key = <<-KEY
   -----BEGIN PGP PUBLIC KEY BLOCK-----
+
   mQGNBGH5MZUBDACypcwBVWZhPbCTLjvKNyl1CaRCbXHCHx6Jq1AYU470HgITx+ij
   Pq4kAJ+guUigu+wne+YoSWS1NIDO7Bmce5Xg0gJcbZ9br7zF3weW6mgHjJVmHvUW
   H5O6xDKr1COt0kL7lNtGbTudSujLMpgXfvF0kUld3A/lXG/s4F1sP3PqK2wZNQ6/

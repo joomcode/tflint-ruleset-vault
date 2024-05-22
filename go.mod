@@ -1,4 +1,4 @@
-module github.com/terraform-linters/tflint-ruleset-template
+module github.com/joomcode/tflint-ruleset-vault
 
 go 1.22.2
 

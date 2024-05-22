@@ -7,33 +7,49 @@ import (
 	"github.com/terraform-linters/tflint-plugin-sdk/helper"
 )
 
-func Test_AwsInstanceExampleType(t *testing.T) {
+func Test_VaultPolicyNameReuseRule(t *testing.T) {
 	tests := []struct {
 		Name     string
 		Content  string
 		Expected helper.Issues
 	}{
 		{
+			Name: "no issue found",
+			Content: `
+resource "vault_policy" "foo" {
+    name = "foo"
+}
+
+resource "vault_policy" "bar" {
+    name = "bar"
+}`,
+			Expected: helper.Issues{},
+		},
+		{
 			Name: "issue found",
 			Content: `
-resource "aws_instance" "web" {
-    instance_type = "t2.micro"
+resource "vault_policy" "foo" {
+    name = "foo"
+}
+
+resource "vault_policy" "foo_dup" {
+    name = "foo"
 }`,
 			Expected: helper.Issues{
 				{
-					Rule:    NewAwsInstanceExampleTypeRule(),
-					Message: "instance type is t2.micro",
+					Rule:    NewVaultPolicyNameReuseRule(),
+					Message: `vault_policy with name "foo" redeclared, previously used at resource.tf:3,12-17`,
 					Range: hcl.Range{
 						Filename: "resource.tf",
-						Start:    hcl.Pos{Line: 3, Column: 21},
-						End:      hcl.Pos{Line: 3, Column: 31},
+						Start:    hcl.Pos{Line: 7, Column: 12},
+						End:      hcl.Pos{Line: 7, Column: 17},
 					},
 				},
 			},
 		},
 	}
 
-	rule := NewAwsInstanceExampleTypeRule()
+	rule := NewVaultPolicyNameReuseRule()
 
 	for _, test := range tests {
 		t.Run(test.Name, func(t *testing.T) {
